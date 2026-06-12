@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Task Tracker Pro</title>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js pour les statistiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        .task-card { transition: all 0.3s ease; }
+        .task-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .overdue { border-left: 4px solid #ef4444 !important; }
+        .due-soon { border-left: 4px solid #f59e0b !important; }
+        
+        /* Styles pour l'impression PDF */
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; }
+            #app-screen { box-shadow: none !important; max-width: 100% !important; }
+            .task-card { break-inside: avoid; border: 1px solid #ccc !important; }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4 md:p-8">
+
+    <!-- ÉCRAN DE CONNEXION -->
+    <div id="login-screen" class="w-full max-w-md mx-auto mt-20 bg-white rounded-2xl shadow-2xl p-8 no-print">
+        <h1 class="text-3xl font-bold text-center text-blue-600 mb-2">✅ Task Tracker Pro</h1>
+        <p class="text-center text-gray-500 mb-6">Gérez vos tâches efficacement</p>
+        <div class="space-y-4">
+            <input type="email" id="login-email" placeholder="Email" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+            <input type="password" id="login-password" placeholder="Mot de passe" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+            <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">Se connecter</button>
+            <div class="relative flex py-2 items-center"><div class="flex-grow border-t border-gray-300"></div><span class="flex-shrink mx-4 text-gray-400 text-sm">ou</span><div class="flex-grow border-t border-gray-300"></div></div>
+            <input type="email" id="reg-email" placeholder="Nouvel Email" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+            <input type="password" id="reg-password" placeholder="Mot de passe (min. 6 caractères)" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+            <button onclick="register()" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-xl transition">Créer un compte</button>
+        </div>
+    </div>
+
+    <!-- ÉCRAN PRINCIPAL -->
+    <div id="app-screen" class="hidden w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+        <!-- En-tête -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white no-print">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h1 class="text-2xl font-bold">✅ Mes Tâches</h1>
+                    <p class="text-blue-100 text-sm" id="user-email"></p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="toggleStats()" class="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg text-sm transition">📊 Stats</button>
+                    <button onclick="logout()" class="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg text-sm transition">Déconnexion</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Statistiques (Masquée par défaut) -->
+        <div id="stats-section" class="hidden p-6 bg-gray-50 border-b border-gray-200 no-print fade-in">
+            <h3 class="font-bold text-gray-700 mb-4">Tableau de bord</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-xl shadow-sm">
+                    <canvas id="statusChart"></canvas>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-sm flex flex-col justify-center gap-3">
+                    <button onclick="exportCSV()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                        📥 Exporter en CSV
+                    </button>
+                    <button onclick="window.print()" class="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">
+                        🖨️ Imprimer / PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire d'ajout -->
+        <div class="p-4 border-b border-gray-200 bg-gray-50 no-print">
+            <div class="space-y-3">
+                <div class="flex gap-2">
+                    <input type="text" id="taskInput" placeholder="Nouvelle tâche..." class="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <button onclick="addTask()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition">+</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="categoryInput" class="px-4 py-2 rounded-lg border border-gray-300 text-sm">
+                        <option value="">Sans catégorie</option>
+                        <option value="Travail">💼 Travail</option>
+                        <option value="Personnel">🏠 Personnel</option>
+                        <option value="Urgent">🔥 Urgent</option>
+                        <option value="Études">📚 Études</option>
+                    </select>
+                    <input type="date" id="dueDateInput" class="px-4 py-2 rounded-lg border border-gray-300 text-sm">
+                </div>
+            </div>
+        </div>
+
+        <!-- Barre de recherche et filtres -->
+        <div class="p-4 border-b border-gray-200 space-y-3 no-print">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+            <div class="flex gap-2 overflow-x-auto pb-2">
+                <button onclick="filterTasks('all')" class="filter-btn px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold whitespace-nowrap" data-filter="all">Toutes</button>
+                <button onclick="filterTasks('todo')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-semibold whitespace-nowrap" data-filter="todo">À faire</button>
+                <button onclick="filterTasks('in-progress')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-semibold whitespace-nowrap" data-filter="in-progress">En cours</button>
+                <button onclick="filterTasks('done')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-semibold whitespace-nowrap" data-filter="done">Terminées</button>
+            </div>
+        </div>
+
+        <!-- Liste des tâches -->
+        <div id="taskList" class="p-4 min-h-[300px] max-h-[60vh] overflow-y-auto bg-gray-50">
+            <!-- Les tâches s'afficheront ici -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // ⚠️ REMPLACEZ CECI PAR VOTRE CONFIGURATION FIREBASE ⚠️
+         const firebaseConfig = {
+    apiKey: "AIzaSyCeTmi07MpQ2_RN4POkDQ-Z8k1A740Ehso",
+    authDomain: "tasktrackermulti.firebaseapp.com",
+    projectId: "tasktrackermulti",
+    storageBucket: "tasktrackermulti.firebasestorage.app",
+    messagingSenderId: "988527576406",
+    appId: "1:988527576406:web:aaed9770300caf095242f7"
+     };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUserId = null;
+        let allTasks = [];
+        let currentFilter = 'all';
+        let unsubscribe = null;
+        let statusChart = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginScreen = document.getElementById('login-screen');
+            const appScreen = document.getElementById('app-screen');
+            const userEmailDisplay = document.getElementById('user-email');
+
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    loginScreen.classList.add('hidden');
+                    appScreen.classList.remove('hidden');
+                    userEmailDisplay.textContent = user.email;
+                    currentUserId = user.uid;
+                    loadTasks(user.uid);
+                    requestNotificationPermission();
+                } else {
+                    loginScreen.classList.remove('hidden');
+                    appScreen.classList.add('hidden');
+                    currentUserId = null;
+                    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+                }
+            });
+
+            document.getElementById('searchInput').addEventListener('input', renderTasks);
+        });
+
+        // --- AUTHENTIFICATION ---
+        window.register = async () => {
+            try {
+                await createUserWithEmailAndPassword(auth, document.getElementById('reg-email').value, document.getElementById('reg-password').value);
+                alert("Compte créé avec succès !");
+            } catch (error) { alert("Erreur: " + error.message); }
+        };
+
+        window.login = async () => {
+            try {
+                await signInWithEmailAndPassword(auth, document.getElementById('login-email').value, document.getElementById('login-password').value);
+            } catch (error) { alert("Erreur de connexion: " + error.message); }
+        };
+
+        window.logout = () => signOut(auth);
+
+        // --- GESTION DES TÂCHES ---
+        function loadTasks(uid) {
+            const q = query(collection(db, "tasks"), where("userId", "==", uid));
+            if (unsubscribe) unsubscribe();
+            
+            unsubscribe = onSnapshot(q, (snapshot) => {
+                allTasks = [];
+                snapshot.forEach((docSnapshot) => {
+                    allTasks.push({ id: docSnapshot.id, ...docSnapshot.data() });
+                });
+                checkOverdueNotifications();
+                updateStats();
+                renderTasks();
+            });
+        }
+
+        function checkOverdueNotifications() {
+            if (Notification.permission === 'granted') {
+                const today = new Date(); today.setHours(0,0,0,0);
+                const overdue = allTasks.filter(t => t.status !== 'done' && t.dueDate && new Date(t.dueDate) < today);
+                if (overdue.length > 0) {
+                    new Notification("⚠️ Tâches en retard !", {
+                        body: `Vous avez ${overdue.length} tâche(s) en retard. Ouvrez l'application pour les voir.`,
+                        icon: "https://cdn-icons-png.flaticon.com/512/3176/3176218.png"
+                    });
+                }
+            }
+        }
+
+        function requestNotificationPermission() {
+            if ("Notification" in window && Notification.permission !== "granted" && Notification.permission !== "denied") {
+                Notification.requestPermission();
+            }
+        }
+
+        window.toggleStats = () => {
+            const section = document.getElementById('stats-section');
+            section.classList.toggle('hidden');
+            if (!section.classList.contains('hidden')) {
+                renderChart();
+            }
+        };
+
+        function renderChart() {
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            const todo = allTasks.filter(t => t.status === 'todo').length;
+            const progress = allTasks.filter(t => t.status === 'in-progress').length;
+            const done = allTasks.filter(t => t.status === 'done').length;
+
+            if (statusChart) statusChart.destroy();
+            statusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['À faire', 'En cours', 'Terminées'],
+                    datasets: [{
+                        data: [todo, progress, done],
+                        backgroundColor: ['#fca5a5', '#fcd34d', '#86efac'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+            });
+        }
+
+        window.exportCSV = () => {
+            if (allTasks.length === 0) return alert("Aucune tâche à exporter.");
+            let csv = "ID,Description,Statut,Catégorie,Échéance,Créé le\n";
+            allTasks.forEach(t => {
+                const date = t.createdAt ? new Date(t.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : 'N/A';
+                csv += `"${t.id}","${t.description}","${t.status}","${t.category || 'N/A'}","${t.dueDate || 'N/A'}","${date}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "mes_taches.csv";
+            link.click();
+        };
+
+        window.filterTasks = (filter) => {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = btn.dataset.filter === filter 
+                    ? 'filter-btn px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold whitespace-nowrap'
+                    : 'filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-semibold whitespace-nowrap';
+            });
+            renderTasks();
+        };
+
+        function renderTasks() {
+            const list = document.getElementById('taskList');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = currentFilter === 'all' ? allTasks : allTasks.filter(t => t.status === currentFilter);
+            
+            if (searchTerm) {
+                filtered = filtered.filter(t => t.description.toLowerCase().includes(searchTerm) || (t.category && t.category.toLowerCase().includes(searchTerm)));
+            }
+
+            list.innerHTML = '';
+            if (filtered.length === 0) {
+                list.innerHTML = '<p class="text-center text-gray-400 py-8">Aucune tâche trouvée 📭</p>';
+                return;
+            }
+
+            const statusColors = { 'todo': 'bg-red-100 text-red-700 border-red-200', 'in-progress': 'bg-yellow-100 text-yellow-700 border-yellow-200', 'done': 'bg-green-100 text-green-700 border-green-200 line-through opacity-70' };
+            const statusLabels = { 'todo': 'À faire', 'in-progress': 'En cours', 'done': 'Terminée' };
+            const categoryIcons = { 'Travail': '💼', 'Personnel': '🏠', 'Urgent': '🔥', 'Études': '📚' };
+
+            filtered.forEach(task => {
+                let dueDateClass = '', dueDateText = '';
+                if (task.dueDate && task.status !== 'done') {
+                    const today = new Date(); today.setHours(0,0,0,0);
+                    const diffDays = Math.ceil((new Date(task.dueDate) - today) / (1000 * 60 * 60 * 24));
+                    if (diffDays < 0) { dueDateClass = 'overdue'; dueDateText = `⚠️ En retard de ${Math.abs(diffDays)} j.`; }
+                    else if (diffDays <= 3) { dueDateClass = 'due-soon'; dueDateText = `⏰ Échéance dans ${diffDays} j.`; }
+                    else { dueDateText = `📅 ${new Date(task.dueDate).toLocaleDateString('fr-FR')}`; }
+                }
+
+                const div = document.createElement('div');
+                div.className = `task-card fade-in bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex flex-col gap-3 mb-3 ${dueDateClass}`;
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex gap-2 mb-2 flex-wrap">
+                                <span class="text-xs font-bold px-2 py-1 rounded-md border ${statusColors[task.status]}">${statusLabels[task.status]}</span>
+                                ${task.category ? `<span class="text-xs font-bold px-2 py-1 rounded-md bg-purple-100 text-purple-700 border border-purple-200">${categoryIcons[task.category] || ''} ${task.category}</span>` : ''}
+                            </div>
+                            <p class="text-gray-800 font-medium text-lg">${task.description}</p>
+                            ${dueDateText ? `<p class="text-xs text-gray-500 mt-1">${dueDateText}</p>` : ''}
+                        </div>
+                        <button onclick="deleteTask('${task.id}')" class="text-gray-400 hover:text-red-500 p-2 no-print">🗑️</button>
+                    </div>
+                    <div class="flex gap-2 mt-2 no-print">
+                        ${task.status !== 'in-progress' ? `<button onclick="updateTaskStatus('${task.id}', 'in-progress')" class="flex-1 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 py-2 rounded-lg text-sm font-semibold transition">▶️ En cours</button>` : ''}
+                        ${task.status !== 'done' ? `<button onclick="updateTaskStatus('${task.id}', 'done')" class="flex-1 bg-green-50 hover:bg-green-100 text-green-700 py-2 rounded-lg text-sm font-semibold transition">✅ Terminer</button>` : ''}
+                    </div>
+                `;
+                list.appendChild(div);
+            });
+        }
+
+        window.addTask = async () => {
+            const desc = document.getElementById('taskInput').value.trim();
+            if (!desc || !currentUserId) return;
+            try {
+                await addDoc(collection(db, "tasks"), {
+                    userId: currentUserId, description: desc, status: 'todo',
+                    category: document.getElementById('categoryInput').value || null,
+                    dueDate: document.getElementById('dueDateInput').value || null,
+                    createdAt: serverTimestamp()
+                });
+                document.getElementById('taskInput').value = '';
+            } catch (error) { alert("Erreur: " + error.message); }
+        };
+
+        window.updateTaskStatus = async (taskId, newStatus) => {
+            try { await updateDoc(doc(db, "tasks", taskId), { status: newStatus }); } 
+            catch (error) { alert("Erreur: " + error.message); }
+        };
+
+        window.deleteTask = async (taskId) => {
+            if(confirm('Supprimer ?')) {
+                try { await deleteDoc(doc(db, "tasks", taskId)); } 
+                catch (error) { alert("Erreur: " + error.message); }
+            }
+        };
+
+        document.getElementById('taskInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') window.addTask(); });
+    </script>
+</body>
+</html>
