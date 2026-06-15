@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker Pro - Catalogue des Fonctionnalités</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .feature-card { transition: all 0.3s ease; }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        @media print { .no-print { display: none; } .page-break { page-break-before: always; } }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 no-print">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold gradient-text">✅ Task Tracker Pro</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#fonctionnalites" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Fonctionnalités</a>
+                    <a href="#securite" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Sécurité</a>
+                    <a href="#tarifs" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Tarifs</a>
+                    <a href="index.html" class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition">Accéder à l'App</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl font-bold mb-6">Task Tracker Pro</h1>
+            <p class="text-xl mb-8 text-blue-100">La solution moderne de gestion de tâches collaborative, sécurisée et intelligente</p>
+            <div class="flex justify-center gap-4">
+                <a href="#fonctionnalites" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">Découvrir les fonctionnalités</a>
+                <button onclick="window.print()" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition no-print">📥 Télécharger en PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Introduction -->
+    <div class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Une application pensée pour votre productivité</h2>
+            <p class="text-lg text-gray-600 mb-8">
+                Task Tracker Pro est une application web progressive (PWA) qui révolutionne la gestion de vos tâches quotidiennes. 
+                Que vous travailliez seul ou en équipe, notre solution s'adapte à vos besoins avec une interface intuitive, 
+                des fonctionnalités avancées et une sécurité de niveau professionnel.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                <div class="p-6 bg-blue-50 rounded-xl">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Rapide & Moderne</h3>
+                    <p class="text-gray-600 text-sm">Interface réactive et design épuré pour une expérience utilisateur optimale</p>
+                </div>
+                <div class="p-6 bg-green-50 rounded-xl">
+                    <div class="text-4xl mb-4">🔒</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Sécurisé</h3>
+                    <p class="text-gray-600 text-sm">Chiffrement HTTPS et isolation stricte de vos données</p>
+                </div>
+                <div class="p-6 bg-purple-50 rounded-xl">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Multi-plateforme</h3>
+                    <p class="text-gray-600 text-sm">Accessible sur PC, mobile et tablette, avec installation native</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fonctionnalités Principales -->
+    <div id="fonctionnalites" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Fonctionnalités Principales</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4">📝</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Gestion Intelligente des Tâches</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Création rapide de tâches</li>
+                        <li>✓ Catégories personnalisables (Travail, Personnel, Urgent...)</li>
+                        <li>✓ Dates d'échéance avec alertes visuelles</li>
+                        <li>✓ Statuts : À faire / En cours / Terminée</li>
+                        <li>✓ Recherche en temps réel</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4">🤝</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Collaboration en Temps Réel</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Partage de tâches par email</li>
+                        <li>✓ Visualisation des tâches partagées</li>
+                        <li>✓ Permissions intelligentes (lecture/écriture)</li>
+                        <li>✓ Synchronisation instantanée</li>
+                        <li>✓ Badge "Partagé avec moi"</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4">🌙</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Mode Sombre & Clair</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Basculement instantané</li>
+                        <li>✓ Préférence sauvegardée</li>
+                        <li>✓ Design adaptatif optimisé</li>
+                        <li>✓ Confort visuel optimal</li>
+                        <li>✓ Économie de batterie sur mobile</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4">📊</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Tableau de Bord & Statistiques</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Graphiques interactifs (Chart.js)</li>
+                        <li>✓ Répartition par statut</li>
+                        <li>✓ Compteurs en temps réel</li>
+                        <li>✓ Visualisation de la productivité</li>
+                        <li>✓ Export CSV des données</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4"></div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Rappels Automatiques par Email</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Alertes pour tâches en retard</li>
+                        <li>✓ Récapitulatif quotidien</li>
+                        <li>✓ Anti-spam intégré (1 email/jour max)</li>
+                        <li>✓ Personnalisation du contenu</li>
+                        <li>✓ Notifications push navigateur</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Application Mobile Native (PWA)</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Installation sur écran d'accueil</li>
+                        <li>✓ Fonctionnement hors-ligne</li>
+                        <li>✓ Plein écran sans barre d'adresse</li>
+                        <li>✓ Compatible iOS & Android</li>
+                        <li>✓ Mises à jour automatiques</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 7 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4">🖨️</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Export & Impression</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Export CSV (Excel compatible)</li>
+                        <li>✓ Impression PDF optimisée</li>
+                        <li>✓ Mise en page professionnelle</li>
+                        <li>✓ Filtres appliqués à l'export</li>
+                        <li>✓ Partage facile des données</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 8 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4">🔍</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Filtres & Tri Avancés</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Filtrage par statut</li>
+                        <li>✓ Recherche textuelle intelligente</li>
+                        <li>✓ Tri par date de création</li>
+                        <li>✓ Tri par date d'échéance</li>
+                        <li>✓ Vue "Tâches partagées"</li>
+                    </ul>
+                </div>
+
+                <!-- Feature 9 -->
+                <div class="feature-card bg-white p-8 rounded-2xl shadow-lg">
+                    <div class="text-4xl mb-4">🔐</div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-3">Authentification Sécurisée</h3>
+                    <ul class="text-gray-600 space-y-2 text-sm">
+                        <li>✓ Inscription/Connexion par email</li>
+                        <li>✓ Récupération de mot de passe</li>
+                        <li>✓ Chiffrement des données</li>
+                        <li>✓ Sessions persistantes</li>
+                        <li>✓ Déconnexion sécurisée</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sécurité -->
+    <div id="securite" class="py-16 bg-white page-break">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Sécurité & Confidentialité</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-br from-green-50 to-emerald-50 p-8 rounded-2xl border-2 border-green-200">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <span class="text-3xl mr-3">🛡️</span> Protection de vos Données
+                    </h3>
+                    <ul class="space-y-4 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✓</span>
+                            <div>
+                                <strong>Chiffrement HTTPS</strong>
+                                <p class="text-sm text-gray-600">Toutes les communications sont chiffrées de bout en bout</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✓</span>
+                            <div>
+                                <strong>Isolation stricte</strong>
+                                <p class="text-sm text-gray-600">Vos tâches sont cloisonnées. Seul vous (et les personnes que vous autorisez) pouvez y accéder</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✓</span>
+                            <div>
+                                <strong>Règles Firestore sécurisées</strong>
+                                <p class="text-sm text-gray-600">Protection au niveau base de données contre les accès non autorisés</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-600 mr-2">✓</span>
+                            <div>
+                                <strong>Protection XSS</strong>
+                                <p class="text-sm text-gray-600">Neutralisation automatique des codes malveillants</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 p-8 rounded-2xl border-2 border-blue-200">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <span class="text-3xl mr-3">🔒</span> Engagement Confidentialité
+                    </h3>
+                    <ul class="space-y-4 text-gray-700">
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">✓</span>
+                            <div>
+                                <strong>Aucune vente de données</strong>
+                                <p class="text-sm text-gray-600">Nous ne vendons, ne louons ni ne partageons vos informations à des tiers</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">✓</span>
+                            <div>
+                                <strong>Pas de publicité ciblée</strong>
+                                <p class="text-sm text-gray-600">Aucune analyse de vos données à des fins publicitaires</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">✓</span>
+                            <div>
+                                <strong>Contrôle total</strong>
+                                <p class="text-sm text-gray-600">Supprimez vos tâches à tout moment, effacement définitif garanti</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-600 mr-2">✓</span>
+                            <div>
+                                <strong>Conformité RGPD</strong>
+                                <p class="text-sm text-gray-600">Respect des réglementations européennes sur la protection des données</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Technical Stack -->
+            <div class="mt-12 bg-gray-50 p-8 rounded-2xl">
+                <h3 class="text-2xl font-bold text-gray-900 mb-6 text-center">Stack Technique</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <div class="text-2xl mb-2">⚡</div>
+                        <div class="font-semibold text-gray-900">Frontend</div>
+                        <div class="text-sm text-gray-600">HTML5 + Tailwind CSS</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <div class="text-2xl mb-2">🔥</div>
+                        <div class="font-semibold text-gray-900">Backend</div>
+                        <div class="text-sm text-gray-600">Firebase (Google)</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <div class="text-2xl mb-2">📊</div>
+                        <div class="font-semibold text-gray-900">Base de données</div>
+                        <div class="text-sm text-gray-600">Firestore (NoSQL)</div>
+                    </div>
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <div class="text-2xl mb-2"></div>
+                        <div class="font-semibold text-gray-900">Hébergement</div>
+                        <div class="text-sm text-gray-600">Cloudflare Pages / Netlify</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarifs -->
+    <div id="tarifs" class="py-16 bg-gradient-to-br from-blue-600 to-indigo-700 text-white page-break">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-4">Tarifs & Accès</h2>
+            <p class="text-center text-blue-100 mb-12 text-xl">Une solution professionnelle 100% gratuite</p>
+            
+            <div class="max-w-3xl mx-auto bg-white text-gray-900 rounded-2xl shadow-2xl overflow-hidden">
+                <div class="p-8 text-center">
+                    <h3 class="text-3xl font-bold mb-2">Version Gratuite</h3>
+                    <div class="text-5xl font-bold text-blue-600 mb-6">0€<span class="text-lg text-gray-600 font-normal">/mois</span></div>
+                    <p class="text-gray-600 mb-8">Toutes les fonctionnalités incluses, sans limitation</p>
+                    
+                    <div class="text-left space-y-3 mb-8">
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3 text-xl">✓</span>
+                            <span>Utilisateurs illimités</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3 text-xl">✓</span>
+                            <span>Tâches illimitées</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3 text-xl">✓</span>
+                            <span>Partage de tâches collaboratif</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3 text-xl">✓</span>
+                            <span>Rappels par email (200/mois)</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3 text-xl">✓</span>
+                            <span>Stockage cloud sécurisé</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3 text-xl">✓</span>
+                            <span>Application mobile PWA</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3 text-xl">✓</span>
+                            <span>Export CSV & PDF</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-green-600 mr-3 text-xl">✓</span>
+                            <span>Support par email</span>
+                        </div>
+                    </div>
+                    
+                    <a href="index.html" class="inline-block bg-blue-600 text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-blue-700 transition shadow-lg">
+                        Commencer Gratuitement →
+                    </a>
+                    
+                    <p class="text-sm text-gray-500 mt-6">Aucune carte de crédit requise • Inscription en 30 secondes</p>
+                </div>
+            </div>
+
+            <!-- Infrastructure Costs 
+            <div class="mt-12 text-center text-blue-100">
+                <p class="text-sm">
+                    <strong>Note technique :</strong> Cette application est entièrement gratuite grâce à l'utilisation 
+                    des plans gratuits de Firebase (Google), Cloudflare et EmailJS. 
+                    Les coûts d'infrastructure sont pris en charge pour offrir la meilleure expérience possible.
+                </p>
+            </div> -->
+        </div>
+    </div>
+
+    <!-- Guide de Démarrage Rapide -->
+    <div class="py-16 bg-gray-50 page-break">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Guide de Démarrage Rapide</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Créez votre compte</h3>
+                    <p class="text-sm text-gray-600">Inscription gratuite en 30 secondes avec votre email</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Ajoutez vos tâches</h3>
+                    <p class="text-sm text-gray-600">Créez vos premières tâches avec catégories et échéances</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Invitez vos collaborateurs</h3>
+                    <p class="text-sm text-gray-600">Partagez des tâches par email pour travailler ensemble</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">4</div>
+                    <h3 class="font-bold text-gray-900 mb-2">Installez l'application</h3>
+                    <p class="text-sm text-gray-600">Ajoutez à l'écran d'accueil pour une expérience native</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="py-16 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">Questions Fréquentes</h2>
+            
+            <div class="space-y-6">
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-gray-900 mb-2 text-lg">📱 L'application fonctionne-t-elle sur mobile ?</h3>
+                    <p class="text-gray-600">Oui ! Task Tracker Pro est une PWA (Progressive Web App) qui fonctionne parfaitement sur iOS et Android. Vous pouvez l'installer sur votre écran d'accueil comme une application native.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-gray-900 mb-2 text-lg">🔐 Mes données sont-elles sécurisées ?</h3>
+                    <p class="text-gray-600">Absolument. Nous utilisons le chiffrement HTTPS, l'authentification Firebase de Google, et des règles de sécurité strictes au niveau de la base de données. Vos tâches sont isolées et seul vous (et les personnes que vous autorisez) pouvez y accéder.</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-gray-900 mb-2 text-lg">🤝 Puis-je partager des tâches avec mon équipe ?</h3>
+                    <p class="text-gray-600">Oui, le partage collaboratif est entièrement gratuit. Entrez simplement l'email de votre collaborateur pour lui donner accès à une tâche spécifique. Il pourra la marquer comme terminée mais ne pourra pas la supprimer (réservé au propriétaire).</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-gray-900 mb-2 text-lg">💰 Y a-t-il des limites dans la version gratuite ?</h3>
+                    <p class="text-gray-600">La version gratuite est très généreuse : tâches illimitées, utilisateurs illimités, toutes les fonctionnalités incluses. La seule limitation est de 200 emails de rappel par mois (suffisant pour la plupart des utilisateurs).</p>
+                </div>
+                
+                <div class="bg-gray-50 p-6 rounded-xl">
+                    <h3 class="font-bold text-gray-900 mb-2 text-lg"> Comment fonctionnent les rappels par email ?</h3>
+                    <p class="text-gray-600">Lorsque vous ouvrez l'application, elle vérifie automatiquement si vous avez des tâches en retard. Si oui, un email récapitulatif vous est envoyé (maximum 1 par jour pour éviter le spam).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Final -->
+    <div class="bg-gradient-to-br from-blue-600 to-indigo-700 text-white py-16">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl font-bold mb-6">Prêt à booster votre productivité ?</h2>
+            <p class="text-xl text-blue-100 mb-8">Rejoignez des milliers d'utilisateurs satisfaits et transformez votre façon de gérer vos tâches</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="index.html" class="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-lg">
+                    🚀 Commencer Gratuitement
+                </a>
+                <button onclick="window.print()" class="border-2 border-white text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white hover:text-blue-600 transition no-print">
+                    📥 Télécharger ce catalogue
+                </button>
+            </div>
+            <p class="text-sm text-blue-200 mt-6">Aucune carte de crédit requise • Configuration en 2 minutes</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-300 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="mb-2">&copy; 2026 Task Tracker Pro. Tous droits réservés.</p>
+            <p class="text-sm text-gray-500">Application développée avec ❤️ pour simplifier votre quotidien</p>
+        </div>
+    </footer>
+
+</body>
+</html>
