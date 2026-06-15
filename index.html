@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Task Tracker Pro</title>
+        <title>Task Tracker Pro</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2563eb">
     
+    <!-- 1. D'abord, on charge Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Ensuite, on lui dit d'activer le mode sombre via une classe -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -20,50 +29,50 @@
         .due-soon { border-left: 4px solid #f59e0b !important; }
         @media print {
             .no-print { display: none !important; }
-            body { background: white !important; }
+            body { background: white !important; color: black !important; }
             #app-screen { box-shadow: none !important; max-width: 100% !important; }
             .task-card { break-inside: avoid; border: 1px solid #ccc !important; }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4 md:p-8">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 min-h-screen p-4 md:p-8 transition-colors duration-300">
 
-    <!-- ÉCRAN DE CONNEXION -->
-    <div id="login-screen" class="w-full max-w-md mx-auto mt-10 md:mt-20 bg-white rounded-2xl shadow-2xl p-8 no-print">
-        <h1 class="text-3xl font-bold text-center text-blue-600 mb-2">✅ Task Tracker Pro</h1>
-        <p class="text-center text-gray-500 mb-6">Gérez vos tâches en toute sécurité</p>
+    <!-- ÉCRAN DE CONNEXION (Visible par défaut, pas de classe 'hidden') -->
+    <div id="login-screen" class="w-full max-w-md mx-auto mt-10 md:mt-20 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 no-print transition-colors duration-300">
+        <h1 class="text-3xl font-bold text-center text-blue-600 dark:text-blue-400 mb-2">✅ Task Tracker Pro</h1>
+        <p class="text-center text-gray-500 dark:text-gray-400 mb-6">Gérez et partagez vos tâches</p>
         
         <div class="space-y-4">
-            <input type="email" id="login-email" placeholder="Email" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
-            <input type="password" id="login-password" placeholder="Mot de passe" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+            <input type="email" id="login-email" placeholder="Email" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none">
+            <input type="password" id="login-password" placeholder="Mot de passe" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none">
             <button onclick="login()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">Se connecter</button>
             
-            <!-- Section Mot de passe oublié -->
             <div class="text-right">
-                <button onclick="toggleResetPassword()" class="text-sm text-blue-600 hover:text-blue-800 underline">Mot de passe oublié ?</button>
+                <button onclick="toggleResetPassword()" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">Mot de passe oublié ?</button>
                 <div id="reset-form" class="hidden mt-2 space-y-2">
-                    <input type="email" id="reset-email" placeholder="Votre adresse email" class="w-full px-4 py-2 rounded-lg border border-gray-300 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
-                    <button onclick="sendResetEmail()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg transition text-sm">Envoyer le lien de réinitialisation</button>
+                    <input type="email" id="reset-email" placeholder="Votre adresse email" class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                    <button onclick="sendResetEmail()" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 rounded-lg transition text-sm">Envoyer le lien</button>
                 </div>
             </div>
 
-            <div class="relative flex py-2 items-center"><div class="flex-grow border-t border-gray-300"></div><span class="flex-shrink mx-4 text-gray-400 text-sm">ou</span><div class="flex-grow border-t border-gray-300"></div></div>
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+                <span class="flex-shrink mx-4 text-gray-400 text-sm">ou</span>
+                <div class="flex-grow border-t border-gray-300 dark:border-gray-600"></div>
+            </div>
 
-            <input type="email" id="reg-email" placeholder="Nouvel Email" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
-            <input type="password" id="reg-password" placeholder="Mot de passe (min. 6 caractères)" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
-            <button onclick="register()" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 rounded-xl transition">Créer un compte</button>
+            <input type="email" id="reg-email" placeholder="Nouvel Email" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none">
+            <input type="password" id="reg-password" placeholder="Mot de passe (min. 6 caractères)" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none">
+            <button onclick="register()" class="w-full bg-gray-800 dark:bg-gray-600 hover:bg-gray-900 dark:hover:bg-gray-500 text-white font-bold py-3 rounded-xl transition">Créer un compte</button>
         </div>
 
-        <!-- Lien Politique de confidentialité -->
         <div class="mt-6 text-center">
-            <button onclick="showPrivacyModal()" class="text-xs text-gray-500 hover:text-gray-700 underline flex items-center justify-center gap-1 mx-auto">
-                🔒 Politique de confidentialité et sécurité des données
-            </button>
+            <button onclick="showPrivacyModal()" class="text-xs text-gray-500 dark:text-gray-400 hover:underline flex items-center justify-center gap-1 mx-auto">🔒 Politique de confidentialité</button>
         </div>
     </div>
 
-    <!-- ÉCRAN PRINCIPAL -->
-    <div id="app-screen" class="hidden w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden">
+    <!-- ÉCRAN PRINCIPAL (Caché par défaut) -->
+    <div id="app-screen" class="hidden w-full max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden transition-colors duration-300">
         <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-white no-print">
             <div class="flex justify-between items-center mb-4">
                 <div>
@@ -71,70 +80,79 @@
                     <p class="text-blue-100 text-sm" id="user-email"></p>
                 </div>
                 <div class="flex gap-2">
+                    <button onclick="toggleDarkMode()" id="dark-mode-btn" class="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg text-sm transition">🌙 Sombre</button>
                     <button onclick="toggleStats()" class="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg text-sm transition">📊 Stats</button>
                     <button onclick="logout()" class="bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg text-sm transition">Déconnexion</button>
                 </div>
             </div>
         </div>
 
-        <!-- Section Statistiques -->
-        <div id="stats-section" class="hidden p-6 bg-gray-50 border-b border-gray-200 no-print fade-in">
-            <h3 class="font-bold text-gray-700 mb-4">Tableau de bord</h3>
+        <div id="stats-section" class="hidden p-6 bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600 no-print fade-in transition-colors duration-300">
+            <h3 class="font-bold text-gray-700 dark:text-gray-200 mb-4">Tableau de bord</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-4 rounded-xl shadow-sm flex justify-center">
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm flex justify-center">
                     <canvas id="statusChart" style="max-height: 250px;"></canvas>
                 </div>
-                <div class="bg-white p-4 rounded-xl shadow-sm flex flex-col justify-center gap-3">
+                <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm flex flex-col justify-center gap-3">
                     <button onclick="exportCSV()" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">📥 Exporter en CSV</button>
                     <button onclick="window.print()" class="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2">🖨️ Imprimer / PDF</button>
                 </div>
             </div>
         </div>
 
-        <!-- Formulaire d'ajout -->
-        <div class="p-4 border-b border-gray-200 bg-gray-50 no-print">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 no-print transition-colors duration-300">
             <div class="space-y-3">
                 <div class="flex gap-2">
-                    <input type="text" id="taskInput" placeholder="Nouvelle tâche..." class="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none">
+                    <input type="text" id="taskInput" placeholder="Nouvelle tâche..." class="flex-1 px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none">
                     <button onclick="addTask()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold transition">+</button>
                 </div>
                 <div class="grid grid-cols-2 gap-2">
-                    <select id="categoryInput" class="px-4 py-2 rounded-lg border border-gray-300 text-sm">
+                    <select id="categoryInput" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-600 dark:text-white text-sm">
                         <option value="">Sans catégorie</option>
                         <option value="Travail">💼 Travail</option>
                         <option value="Personnel">🏠 Personnel</option>
                         <option value="Urgent">🔥 Urgent</option>
                         <option value="Études">📚 Études</option>
                     </select>
-                    <input type="date" id="dueDateInput" class="px-4 py-2 rounded-lg border border-gray-300 text-sm">
+                    <input type="date" id="dueDateInput" class="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-600 dark:text-white text-sm">
                 </div>
             </div>
         </div>
 
-        <!-- Filtres -->
-        <div class="p-4 border-b border-gray-200 space-y-3 no-print">
-            <input type="text" id="searchInput" placeholder="🔍 Rechercher..." class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 outline-none text-sm">
+        <div class="p-4 border-b border-gray-200 dark:border-gray-600 space-y-3 no-print transition-colors duration-300">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher..." class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-600 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none text-sm">
             <div class="flex gap-2 overflow-x-auto pb-2">
                 <button onclick="filterTasks('all')" class="filter-btn px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold whitespace-nowrap" data-filter="all">Toutes</button>
-                <button onclick="filterTasks('todo')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-semibold whitespace-nowrap" data-filter="todo">À faire</button>
-                <button onclick="filterTasks('in-progress')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-semibold whitespace-nowrap" data-filter="in-progress">En cours</button>
-                <button onclick="filterTasks('done')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-semibold whitespace-nowrap" data-filter="done">Terminées</button>
+                <button onclick="filterTasks('todo')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-600 dark:text-gray-200 text-sm font-semibold whitespace-nowrap" data-filter="todo">À faire</button>
+                <button onclick="filterTasks('in-progress')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-600 dark:text-gray-200 text-sm font-semibold whitespace-nowrap" data-filter="in-progress">En cours</button>
+                <button onclick="filterTasks('done')" class="filter-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-600 dark:text-gray-200 text-sm font-semibold whitespace-nowrap" data-filter="done">Terminées</button>
+                <button onclick="filterTasks('shared')" class="filter-btn px-4 py-2 rounded-full bg-purple-200 dark:bg-purple-900 dark:text-purple-200 text-sm font-semibold whitespace-nowrap" data-filter="shared">🤝 Partagées</button>
             </div>
         </div>
 
-        <!-- Liste des tâches -->
-        <div id="taskList" class="p-4 min-h-[300px] max-h-[60vh] overflow-y-auto bg-gray-50"></div>
+        <div id="taskList" class="p-4 min-h-[300px] max-h-[60vh] overflow-y-auto bg-gray-50 dark:bg-gray-900 transition-colors duration-300"></div>
     </div>
 
-    <!-- MODAL POLITIQUE DE CONFIDENTIALITÉ -->
+    <!-- MODAL PARTAGE -->
+    <div id="share-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 no-print">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl fade-in">
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">🤝 Partager cette tâche</h3>
+            <input type="email" id="share-email-input" placeholder="exemple@email.com" class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white mb-4 focus:ring-2 focus:ring-blue-500 outline-none">
+            <div class="flex gap-2">
+                <button onclick="confirmShareTask()" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">Partager</button>
+                <button onclick="closeShareModal()" class="flex-1 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-800 dark:text-white font-bold py-3 rounded-xl transition">Annuler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CONFIDENTIALITÉ -->
     <div id="privacy-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 no-print">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl fade-in">
-            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">🔒 Sécurité et Confidentialité</h3>
-            <ul class="text-sm text-gray-600 space-y-3 list-disc pl-5">
-                <li><strong>Chiffrement :</strong> Toutes les communications sont chiffrées via HTTPS.</li>
-                <li><strong>Isolation des données :</strong> Vos tâches sont cloisonnées. Seul votre identifiant unique sécurisé permet d'y accéder.</li>
-                <li><strong>Aucun partage :</strong> Nous ne vendons ni n'analysons vos données personnelles à des fins publicitaires.</li>
-                <li><strong>Contrôle total :</strong> La suppression d'une tâche l'efface définitivement de nos serveurs.</li>
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 max-w-md w-full shadow-2xl fade-in">
+            <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">🔒 Sécurité</h3>
+            <ul class="text-sm text-gray-600 dark:text-gray-300 space-y-3 list-disc pl-5">
+                <li>Chiffrement HTTPS des communications.</li>
+                <li>Isolation stricte des données par utilisateur.</li>
+                <li>Aucune vente ou analyse de vos données.</li>
             </ul>
             <button onclick="hidePrivacyModal()" class="mt-6 w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 transition">J'ai compris</button>
         </div>
@@ -143,9 +161,9 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, query, where, onSnapshot, deleteDoc, doc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, query, where, or, onSnapshot, deleteDoc, doc, updateDoc, serverTimestamp, arrayUnion } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-        // ⚠️ REMPLACEZ CECI PAR VOTRE CONFIGURATION FIREBASE ⚠️
+        // CONFIGURATION FIREBASE
          const firebaseConfig = {
     apiKey: "AIzaSyCeTmi07MpQ2_RN4POkDQ-Z8k1A740Ehso",
     authDomain: "tasktrackermulti.firebaseapp.com",
@@ -154,18 +172,56 @@
     messagingSenderId: "988527576406",
     appId: "1:988527576406:web:aaed9770300caf095242f7"
     };
-
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
         let currentUserId = null;
+        let currentUserEmail = null;
         let allTasks = [];
         let currentFilter = 'all';
         let unsubscribe = null;
         let statusChart = null;
+        let taskToShareId = null;
+
+                // --- MODE SOMBRE (Version corrigée et debuggée) ---
+        function initDarkMode() {
+            console.log("🔄 Initialisation du mode sombre...");
+            const isDark = localStorage.getItem('darkMode') === 'true';
+            
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                const btn = document.getElementById('dark-mode-btn');
+                if (btn) btn.textContent = '☀️ Clair';
+                console.log("✅ Mode sombre activé au chargement.");
+            } else {
+                console.log("💡 Mode clair par défaut.");
+            }
+        }
+
+        window.toggleDarkMode = () => {
+            console.log("🖱️ Bouton mode sombre cliqué !");
+            
+            // Basculer la classe 'dark' sur la balise <html>
+            document.documentElement.classList.toggle('dark');
+            
+            // Vérifier le nouvel état
+            const isDark = document.documentElement.classList.contains('dark');
+            
+            // Sauvegarder la préférence
+            localStorage.setItem('darkMode', isDark);
+            
+            // Mettre à jour le texte du bouton
+            const btn = document.getElementById('dark-mode-btn');
+            if (btn) {
+                btn.textContent = isDark ? '☀️ Clair' : '🌙 Sombre';
+            }
+            
+            console.log("🎨 Nouvel état appliqué :", isDark ? "SOMBRE" : "CLAIR");
+        };
 
         document.addEventListener('DOMContentLoaded', () => {
+            initDarkMode();
             const loginScreen = document.getElementById('login-screen');
             const appScreen = document.getElementById('app-screen');
             const userEmailDisplay = document.getElementById('user-email');
@@ -176,12 +232,14 @@
                     appScreen.classList.remove('hidden');
                     userEmailDisplay.textContent = user.email;
                     currentUserId = user.uid;
-                    loadTasks(user.uid);
+                    currentUserEmail = user.email;
+                    loadTasks(user.uid, user.email);
                     requestNotificationPermission();
                 } else {
                     loginScreen.classList.remove('hidden');
                     appScreen.classList.add('hidden');
                     currentUserId = null;
+                    currentUserEmail = null;
                     if (unsubscribe) { unsubscribe(); unsubscribe = null; }
                 }
             });
@@ -189,75 +247,56 @@
             document.getElementById('searchInput').addEventListener('input', renderTasks);
         });
 
-        // --- AUTHENTIFICATION ---
         window.register = async () => {
             try {
                 await createUserWithEmailAndPassword(auth, document.getElementById('reg-email').value, document.getElementById('reg-password').value);
-                alert("✅ Compte créé avec succès !");
+                alert("✅ Compte créé !");
             } catch (error) { alert("❌ Erreur: " + error.message); }
         };
 
         window.login = async () => {
             try {
                 await signInWithEmailAndPassword(auth, document.getElementById('login-email').value, document.getElementById('login-password').value);
-            } catch (error) { alert("❌ Erreur de connexion: " + error.message); }
+            } catch (error) { alert("❌ Erreur: " + error.message); }
         };
 
         window.logout = () => signOut(auth);
 
-        // --- MOT DE PASSE OUBLIÉ ---
         window.toggleResetPassword = () => {
-            const form = document.getElementById('reset-form');
-            form.classList.toggle('hidden');
-            if (!form.classList.contains('hidden')) {
-                document.getElementById('reset-email').focus();
-            }
+            document.getElementById('reset-form').classList.toggle('hidden');
         };
 
         window.sendResetEmail = async () => {
             const email = document.getElementById('reset-email').value.trim();
-            if (!email) return alert("Veuillez entrer votre adresse email.");
+            if (!email) return alert("Entrez votre email.");
             try {
                 await sendPasswordResetEmail(auth, email);
-                alert(`✅ Un lien de réinitialisation sécurisé a été envoyé à ${email}. Vérifiez votre boîte de réception (et vos spams).`);
+                alert(`✅ Lien envoyé à ${email}`);
                 document.getElementById('reset-form').classList.add('hidden');
-                document.getElementById('reset-email').value = '';
-            } catch (error) {
-                alert("❌ Erreur : " + (error.code === 'auth/user-not-found' ? "Aucun compte associé à cet email." : error.message));
-            }
+            } catch (error) { alert("❌ Erreur: " + error.message); }
         };
 
-        // --- POLITIQUE DE CONFIDENTIALITÉ ---
         window.showPrivacyModal = () => document.getElementById('privacy-modal').classList.remove('hidden');
         window.hidePrivacyModal = () => document.getElementById('privacy-modal').classList.add('hidden');
 
-        // --- GESTION DES TÂCHES ---
-        function loadTasks(uid) {
-            const q = query(collection(db, "tasks"), where("userId", "==", uid));
+        function loadTasks(uid, email) {
+            const q = query(collection(db, "tasks"), or(
+                where("userId", "==", uid),
+                where("sharedWith", "array-contains", email)
+            ));
+            
             if (unsubscribe) unsubscribe();
             
             unsubscribe = onSnapshot(q, (snapshot) => {
                 allTasks = [];
-                snapshot.forEach((docSnapshot) => {
-                    allTasks.push({ id: docSnapshot.id, ...docSnapshot.data() });
-                });
-                checkOverdueNotifications();
+                snapshot.forEach((docSnapshot) => allTasks.push({ id: docSnapshot.id, ...docSnapshot.data() }));
                 updateStats();
                 renderTasks();
-            });
-        }
-
-        function checkOverdueNotifications() {
-            if (Notification.permission === 'granted') {
-                const today = new Date(); today.setHours(0,0,0,0);
-                const overdue = allTasks.filter(t => t.status !== 'done' && t.dueDate && new Date(t.dueDate) < today);
-                if (overdue.length > 0) {
-                    new Notification("⚠️ Tâches en retard !", {
-                        body: `Vous avez ${overdue.length} tâche(s) en retard.`,
-                        icon: "https://cdn-icons-png.flaticon.com/512/3176/3176218.png"
-                    });
+            }, (error) => {
+                if (error.code === 'failed-precondition') {
+                    alert("⚠️ Cliquez sur F12 (Console) et suivez le lien bleu pour créer l'index de partage Firebase.");
                 }
-            }
+            });
         }
 
         function requestNotificationPermission() {
@@ -285,29 +324,33 @@
                     labels: ['À faire', 'En cours', 'Terminées'],
                     datasets: [{ data: [todo, progress, done], backgroundColor: ['#fca5a5', '#fcd34d', '#86efac'], borderWidth: 0 }]
                 },
-                options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+                options: { responsive: true, plugins: { legend: { position: 'bottom', labels: { color: document.documentElement.classList.contains('dark') ? '#fff' : '#000' } } } }
             });
         }
 
         window.exportCSV = () => {
-            if (allTasks.length === 0) return alert("Aucune tâche à exporter.");
-            let csv = "Description,Statut,Catégorie,Échéance\n";
+            if (allTasks.length === 0) return alert("Aucune tâche.");
+            let csv = "Description,Statut,Catégorie,Échéance,Partagé avec\n";
             allTasks.forEach(t => {
-                csv += `"${t.description}","${t.status}","${t.category || 'N/A'}","${t.dueDate || 'N/A'}"\n`;
+                csv += `"${t.description}","${t.status}","${t.category || 'N/A'}","${t.dueDate || 'N/A'}","${t.sharedWith ? t.sharedWith.join('; ') : 'Personnel'}"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = "mes_taches.csv";
+            link.download = "taches.csv";
             link.click();
         };
 
         window.filterTasks = (filter) => {
             currentFilter = filter;
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.className = btn.dataset.filter === filter 
-                    ? 'filter-btn px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold whitespace-nowrap'
-                    : 'filter-btn px-4 py-2 rounded-full bg-gray-200 text-gray-700 text-sm font-semibold whitespace-nowrap';
+                if (btn.dataset.filter === filter) {
+                    btn.className = filter === 'shared' 
+                        ? 'filter-btn px-4 py-2 rounded-full bg-purple-600 text-white text-sm font-semibold whitespace-nowrap'
+                        : 'filter-btn px-4 py-2 rounded-full bg-blue-600 text-white text-sm font-semibold whitespace-nowrap';
+                } else {
+                    btn.className = 'filter-btn px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-600 dark:text-gray-200 text-sm font-semibold whitespace-nowrap';
+                }
             });
             renderTasks();
         };
@@ -315,105 +358,92 @@
         function renderTasks() {
             const list = document.getElementById('taskList');
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            let filtered = currentFilter === 'all' ? allTasks : allTasks.filter(t => t.status === currentFilter);
+            
+            let filtered = allTasks;
+            if (currentFilter === 'shared') {
+                filtered = filtered.filter(t => t.userId !== currentUserId && t.sharedWith && t.sharedWith.includes(currentUserEmail));
+            } else if (currentFilter !== 'all') {
+                filtered = filtered.filter(t => t.status === currentFilter);
+            }
             
             if (searchTerm) {
-                filtered = filtered.filter(t => t.description.toLowerCase().includes(searchTerm) || (t.category && t.category.toLowerCase().includes(searchTerm)));
+                filtered = filtered.filter(t => t.description.toLowerCase().includes(searchTerm));
             }
 
             list.innerHTML = '';
             if (filtered.length === 0) {
-                list.innerHTML = '<p class="text-center text-gray-400 py-8">Aucune tâche trouvée 📭</p>';
+                list.innerHTML = '<p class="text-center text-gray-400 dark:text-gray-500 py-8">Aucune tâche trouvée 📭</p>';
                 return;
             }
 
-            filtered.forEach(task => renderTaskCard(task, list));
+            filtered.forEach(task => {
+                const isOwner = task.userId === currentUserId;
+                const div = document.createElement('div');
+                div.className = `task-card fade-in bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-4 shadow-sm flex flex-col gap-3 mb-3 transition-colors duration-300`;
+                
+                let badges = `<span class="text-xs font-bold px-2 py-1 rounded-md border ${task.status === 'todo' ? 'bg-red-100 text-red-700 border-red-200' : task.status === 'in-progress' ? 'bg-yellow-100 text-yellow-700 border-yellow-200' : 'bg-green-100 text-green-700 border-green-200'}">${task.status === 'todo' ? 'À faire' : task.status === 'in-progress' ? 'En cours' : 'Terminée'}</span>`;
+                
+                if (!isOwner && task.sharedWith?.includes(currentUserEmail)) {
+                    badges += `<span class="text-xs font-bold px-2 py-1 rounded-md bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 border border-blue-200 dark:border-blue-700">🤝 Partagé</span>`;
+                }
+
+                const descP = document.createElement('p');
+                descP.className = 'text-gray-800 dark:text-gray-100 font-medium text-lg break-words mt-2';
+                descP.textContent = task.description;
+
+                div.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div class="flex-1">
+                            <div class="flex gap-2 flex-wrap">${badges}</div>
+                        </div>
+                        ${isOwner ? `<button onclick="openShareModal('${task.id}')" class="text-blue-500 hover:text-blue-700 dark:text-blue-400 p-2 no-print text-sm font-semibold">🤝 Partager</button>` : ''}
+                        <button onclick="window.deleteTask('${task.id}')" class="text-gray-400 hover:text-red-500 p-2 no-print">🗑️</button>
+                    </div>
+                `;
+                div.appendChild(descP);
+
+                const actionsDiv = document.createElement('div');
+                actionsDiv.className = 'flex gap-2 mt-2 no-print';
+                if (task.status !== 'in-progress') {
+                    const btn = document.createElement('button');
+                    btn.className = 'flex-1 bg-yellow-50 dark:bg-yellow-900/30 hover:bg-yellow-100 dark:hover:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300 py-2 rounded-lg text-sm font-semibold transition';
+                    btn.textContent = '▶️ En cours';
+                    btn.onclick = () => window.updateTaskStatus(task.id, 'in-progress');
+                    actionsDiv.appendChild(btn);
+                }
+                if (task.status !== 'done') {
+                    const btn = document.createElement('button');
+                    btn.className = 'flex-1 bg-green-50 dark:bg-green-900/30 hover:bg-green-100 dark:hover:bg-green-900/50 text-green-700 dark:text-green-300 py-2 rounded-lg text-sm font-semibold transition';
+                    btn.textContent = '✅ Terminer';
+                    btn.onclick = () => window.updateTaskStatus(task.id, 'done');
+                    actionsDiv.appendChild(btn);
+                }
+                div.appendChild(actionsDiv);
+                list.appendChild(div);
+            });
         }
 
-        // --- FONCTION SÉCURISÉE CONTRE LES FAILLES XSS ---
-        function renderTaskCard(task, list) {
-            const statusColors = { 'todo': 'bg-red-100 text-red-700 border-red-200', 'in-progress': 'bg-yellow-100 text-yellow-700 border-yellow-200', 'done': 'bg-green-100 text-green-700 border-green-200 line-through opacity-70' };
-            const statusLabels = { 'todo': 'À faire', 'in-progress': 'En cours', 'done': 'Terminée' };
-            const categoryIcons = { 'Travail': '💼', 'Personnel': '🏠', 'Urgent': '🔥', 'Études': '📚' };
+        window.openShareModal = (taskId) => {
+            taskToShareId = taskId;
+            document.getElementById('share-modal').classList.remove('hidden');
+            document.getElementById('share-email-input').value = '';
+        };
+        window.closeShareModal = () => {
+            document.getElementById('share-modal').classList.add('hidden');
+            taskToShareId = null;
+        };
 
-            let dueDateClass = '', dueDateText = '';
-            if (task.dueDate && task.status !== 'done') {
-                const today = new Date(); today.setHours(0,0,0,0);
-                const diffDays = Math.ceil((new Date(task.dueDate) - today) / (1000 * 60 * 60 * 24));
-                if (diffDays < 0) { dueDateClass = 'overdue'; dueDateText = `⚠️ En retard de ${Math.abs(diffDays)} j.`; }
-                else if (diffDays <= 3) { dueDateClass = 'due-soon'; dueDateText = `⏰ Échéance dans ${diffDays} j.`; }
-                else { dueDateText = `📅 ${new Date(task.dueDate).toLocaleDateString('fr-FR')}`; }
-            }
+        window.confirmShareTask = async () => {
+            const email = document.getElementById('share-email-input').value.trim().toLowerCase();
+            if (!email || !email.includes('@')) return alert("Email invalide.");
+            if (email === currentUserEmail) return alert("Vous ne pouvez pas partager avec vous-même.");
 
-            const div = document.createElement('div');
-            div.className = `task-card fade-in bg-white border border-gray-200 rounded-xl p-4 shadow-sm flex flex-col gap-3 mb-3 ${dueDateClass}`;
-
-            // Partie supérieure (Badges + Description SÉCURISÉE)
-            const topDiv = document.createElement('div');
-            topDiv.className = 'flex justify-between items-start';
-            
-            const infoDiv = document.createElement('div');
-            infoDiv.className = 'flex-1';
-
-            const badgesDiv = document.createElement('div');
-            badgesDiv.className = 'flex gap-2 mb-2 flex-wrap';
-            
-            const statusBadge = document.createElement('span');
-            statusBadge.className = `text-xs font-bold px-2 py-1 rounded-md border ${statusColors[task.status]}`;
-            statusBadge.textContent = statusLabels[task.status];
-            badgesDiv.appendChild(statusBadge);
-
-            if (task.category) {
-                const catBadge = document.createElement('span');
-                catBadge.className = 'text-xs font-bold px-2 py-1 rounded-md bg-purple-100 text-purple-700 border border-purple-200';
-                catBadge.textContent = `${categoryIcons[task.category] || ''} ${task.category}`;
-                badgesDiv.appendChild(catBadge);
-            }
-            infoDiv.appendChild(badgesDiv);
-
-            // 🛡️ SÉCURITÉ XSS : Utilisation de textContent au lieu de innerHTML pour la description
-            const descP = document.createElement('p');
-            descP.className = 'text-gray-800 font-medium text-lg break-words';
-            descP.textContent = task.description; // Neutralise tout code HTML/JS malveillant
-            infoDiv.appendChild(descP);
-
-            if (dueDateText) {
-                const dateP = document.createElement('p');
-                dateP.className = 'text-xs text-gray-500 mt-1';
-                dateP.textContent = dueDateText;
-                infoDiv.appendChild(dateP);
-            }
-            topDiv.appendChild(infoDiv);
-
-            // Bouton supprimer
-            const delBtn = document.createElement('button');
-            delBtn.className = 'text-gray-400 hover:text-red-500 p-2 no-print';
-            delBtn.innerHTML = '🗑️';
-            delBtn.onclick = () => window.deleteTask(task.id);
-            topDiv.appendChild(delBtn);
-            div.appendChild(topDiv);
-
-            // Boutons d'action
-            const actionsDiv = document.createElement('div');
-            actionsDiv.className = 'flex gap-2 mt-2 no-print';
-            
-            if (task.status !== 'in-progress') {
-                const progBtn = document.createElement('button');
-                progBtn.className = 'flex-1 bg-yellow-50 hover:bg-yellow-100 text-yellow-700 py-2 rounded-lg text-sm font-semibold transition';
-                progBtn.textContent = '▶️ En cours';
-                progBtn.onclick = () => window.updateTaskStatus(task.id, 'in-progress');
-                actionsDiv.appendChild(progBtn);
-            }
-            if (task.status !== 'done') {
-                const doneBtn = document.createElement('button');
-                doneBtn.className = 'flex-1 bg-green-50 hover:bg-green-100 text-green-700 py-2 rounded-lg text-sm font-semibold transition';
-                doneBtn.textContent = '✅ Terminer';
-                doneBtn.onclick = () => window.updateTaskStatus(task.id, 'done');
-                actionsDiv.appendChild(doneBtn);
-            }
-            div.appendChild(actionsDiv);
-            list.appendChild(div);
-        }
+            try {
+                await updateDoc(doc(db, "tasks", taskToShareId), { sharedWith: arrayUnion(email) });
+                alert(`✅ Partagé avec ${email}`);
+                closeShareModal();
+            } catch (error) { alert("❌ Erreur: " + error.message); }
+        };
 
         window.addTask = async () => {
             const desc = document.getElementById('taskInput').value.trim();
@@ -423,7 +453,7 @@
                     userId: currentUserId, description: desc, status: 'todo',
                     category: document.getElementById('categoryInput').value || null,
                     dueDate: document.getElementById('dueDateInput').value || null,
-                    createdAt: serverTimestamp()
+                    sharedWith: [], createdAt: serverTimestamp()
                 });
                 document.getElementById('taskInput').value = '';
             } catch (error) { alert("❌ Erreur: " + error.message); }
@@ -435,13 +465,14 @@
         };
 
         window.deleteTask = async (taskId) => {
-            if(confirm('Supprimer cette tâche définitivement ?')) {
+            if(confirm('Supprimer ?')) {
                 try { await deleteDoc(doc(db, "tasks", taskId)); } 
                 catch (error) { alert("❌ Erreur: " + error.message); }
             }
         };
 
         document.getElementById('taskInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') window.addTask(); });
+        document.getElementById('share-email-input').addEventListener('keypress', (e) => { if (e.key === 'Enter') window.confirmShareTask(); });
     </script>
 </body>
 </html>
